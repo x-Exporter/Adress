@@ -13,29 +13,21 @@ public:
 	{
 		mass_adress = new string[amount * 4];
 	}
-
-	void set_adress(string something, int i)
+	void take_adress(string adress,int i)
 	{
-		mass_adress[i] = something;
+		mass_adress[i] = adress;
 	}
-	void print_adress(int amount,ofstream &ofile)
+	void cout_to_file(ofstream &ofile)
 	{
-		string inf;
-		ofile << amount << endl;
-		for (int i = 0; i < amount; i++)
+		for (int i = 0; i < 4; i++)
 		{
-			for (int k = amount * 4 - (i + 1) * 4; k < amount * 4 - i * 4; k++)
+			ofile << mass_adress[i];
+			if (i != 3)
 			{
-				
-				inf = mass_adress[k];
-				ofile << inf;
-				if (k +1 != amount * 4 - i * 4)
-				{
-					ofile << ", ";
-				}
+				ofile << ", ";
 			}
-			ofile << endl;
 		}
+		ofile << endl;
 	}
 };
 
@@ -48,14 +40,30 @@ int main()
 	int amount;
 	string something;
 	ifile >> amount;
-	Adress adress(amount);
 
-	for (int i = 0; i < amount * 4; i++)
+	Adress adress1(amount);
+	for (int i = 0; i < 4; i++)
 	{
 		ifile >> something;
-		adress.set_adress(something, i);
+		adress1.take_adress(something, i);
 	}
-	adress.print_adress(amount,ofile);
 
-	
+	Adress adress2(amount);
+	for (int i = 0; i < 4; i++)
+	{
+		ifile >> something;
+		adress2.take_adress(something, i);
+	}
+
+	Adress adress3(amount);
+	for (int i = 0; i < 4; i++)
+	{
+		ifile >> something;
+		adress3.take_adress(something, i);
+	}
+	ofile << amount << endl;
+
+	adress3.cout_to_file(ofile);
+	adress2.cout_to_file(ofile);
+	adress1.cout_to_file(ofile);
 }
