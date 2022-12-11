@@ -7,27 +7,21 @@ using namespace std;
 class Adress
 {
 private:
-	string* mass_adress;
+	string city = "City";
+	string street = "Street";
+	int house_num = 0;
+	int apartments_num = 0;
 public:
-	Adress(int amount)
+	void set_info(ifstream &ifile)
 	{
-		mass_adress = new string[amount * 4];
+		ifile >> city;
+		ifile >> street;
+		ifile >> house_num;
+		ifile >> apartments_num;
 	}
-	void take_adress(string adress,int i)
+	void get_info(ofstream& ofile)
 	{
-		mass_adress[i] = adress;
-	}
-	void cout_to_file(ofstream &ofile)
-	{
-		for (int i = 0; i < 4; i++)
-		{
-			ofile << mass_adress[i];
-			if (i != 3)
-			{
-				ofile << ", ";
-			}
-		}
-		ofile << endl;
+		ofile << city << ", " << street << ", " << house_num << ", " << apartments_num << endl;
 	}
 };
 
@@ -38,32 +32,16 @@ int main()
 	ifstream ifile("in.txt");
 	ofstream ofile("out.txt");
 	int amount;
-	string something;
 	ifile >> amount;
-
-	Adress adress1(amount);
-	for (int i = 0; i < 4; i++)
+	Adress* addresses = new Adress[amount];
+	for (int i = 0; i < amount; i++)
 	{
-		ifile >> something;
-		adress1.take_adress(something, i);
-	}
-
-	Adress adress2(amount);
-	for (int i = 0; i < 4; i++)
-	{
-		ifile >> something;
-		adress2.take_adress(something, i);
-	}
-
-	Adress adress3(amount);
-	for (int i = 0; i < 4; i++)
-	{
-		ifile >> something;
-		adress3.take_adress(something, i);
+		addresses[i].set_info(ifile);
 	}
 	ofile << amount << endl;
-
-	adress3.cout_to_file(ofile);
-	adress2.cout_to_file(ofile);
-	adress1.cout_to_file(ofile);
+	for (int i = amount-1; i >= 0; i--)
+	{
+		addresses[i].get_info(ofile);
+	}
+	delete[] addresses;
 }
